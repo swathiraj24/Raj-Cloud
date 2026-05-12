@@ -1,13 +1,13 @@
 provider "azurerm" {
-  features = {}
+  features {}
 }
 
 module "network" {
-  source                = "../../modules/vnet"
-  resource_group_name   = var.resource_group_name
-  location              = var.location
-  hub_vnet_name         = "hub-vnet-prod"
-  hub_vnet_address_space = "10.0.0.0/16"
+  source                    = "../../modules/vnet"
+  resource_group_name       = var.resource_group_name
+  location                  = var.location
+  hub_vnet_name             = "hub-vnet-prod"
+  hub_vnet_address_space    = "10.0.0.0/16"
   hub_private_subnet_prefix = "10.0.1.0/24"
   spoke_vnets = [
     {
@@ -21,7 +21,7 @@ module "network" {
   ]
   spoke_subnet_prefixes = {
     "spoke-vnet-apps-prod" = "10.1.1.0/24"
-    "spoke-vnet-aks-prod"   = "10.2.1.0/24"
+    "spoke-vnet-aks-prod"  = "10.2.1.0/24"
   }
 }
 
