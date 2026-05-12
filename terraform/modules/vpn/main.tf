@@ -8,10 +8,6 @@ terraform {
   }
 }
 
-provider "azurerm" {
-  features = {}
-}
-
 resource "azurerm_public_ip" "vpn_gateway" {
   name                = var.vpn_gateway_public_ip_name
   location            = var.location
