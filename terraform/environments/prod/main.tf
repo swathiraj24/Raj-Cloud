@@ -5,6 +5,7 @@ provider "azurerm" {
 module "network" {
   source                    = "../../modules/vnet"
   resource_group_name       = var.resource_group_name
+  create_resource_group     = false
   location                  = var.location
   hub_vnet_name             = "hub-vnet-prod"
   hub_vnet_address_space    = "10.0.0.0/16"
