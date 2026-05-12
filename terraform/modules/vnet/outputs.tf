@@ -4,16 +4,16 @@ output "resource_group_name" {
 }
 
 output "hub_vnet_id" {
-  value       = azurerm_virtual_network.hub.id
+  value       = var.create_hub_vnet ? azurerm_virtual_network.hub[0].id : data.azurerm_virtual_network.hub[0].id
   description = "ID of the hub virtual network."
 }
 
 output "spoke_vnet_ids" {
-  value       = [for v in azurerm_virtual_network.spoke : v.id]
+  value       = var.create_spoke_vnets ? [for v in azurerm_virtual_network.spoke : v.id] : [for v in data.azurerm_virtual_network.spoke : v.id]
   description = "IDs of the spoke virtual networks."
 }
 
 output "hub_gateway_subnet_id" {
-  value       = azurerm_subnet.hub_gateway.id
+  value       = var.create_hub_vnet ? azurerm_subnet.hub_gateway[0].id : data.azurerm_subnet.hub_gateway[0].id
   description = "ID of the hub gateway subnet."
 }

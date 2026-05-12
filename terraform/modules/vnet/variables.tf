@@ -9,6 +9,18 @@ variable "create_resource_group" {
   default     = true
 }
 
+variable "create_hub_vnet" {
+  type        = bool
+  description = "Whether to create the hub virtual network. Set false when the hub VNet already exists."
+  default     = true
+}
+
+variable "create_spoke_vnets" {
+  type        = bool
+  description = "Whether to create the spoke virtual networks. Set false when the spoke VNets already exist."
+  default     = true
+}
+
 variable "location" {
   type        = string
   description = "Azure region for the hub and spoke network."

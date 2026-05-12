@@ -19,34 +19,74 @@ data "azurerm_resource_group" "existing" {
   name  = var.resource_group_name
 }
 
+locals {
+  spoke_vnets = { for s in var.spoke_vnets : s.name => s }
+}
+
+data "azurerm_virtual_network" "hub" {
+  count               = var.create_hub_vnet ? 0 : 1
+  name                = var.hub_vnet_name
+  resource_group_name = var.resource_group_name
+}
+
 resource "azurerm_virtual_network" "hub" {
+  count               = var.create_hub_vnet ? 1 : 0
   name                = var.hub_vnet_name
   address_space       = [var.hub_vnet_address_space]
   location            = var.location
   resource_group_name = var.resource_group_name
 }
 
-resource "azurerm_subnet" "hub_private" {
+data "azurerm_subnet" "hub_private" {
+  count                = var.create_hub_vnet ? 0 : 1
   name                 = var.hub_private_subnet_name
   resource_group_name  = var.resource_group_name
-  virtual_network_name = azurerm_virtual_network.hub.name
+  virtual_network_name = data.azurerm_virtual_network.hub[0].name
+}
+
+resource "azurerm_subnet" "hub_private" {
+  count                = var.create_hub_vnet ? 1 : 0
+  name                 = var.hub_private_subnet_name
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.hub[0].name
   address_prefixes     = [var.hub_private_subnet_prefix]
   service_endpoints    = var.service_endpoints
 }
 
-resource "azurerm_subnet" "hub_gateway" {
+data "azurerm_subnet" "hub_gateway" {
+  count                = var.create_hub_vnet ? 0 : 1
   name                 = var.hub_gateway_subnet_name
   resource_group_name  = var.resource_group_name
-  virtual_network_name = azurerm_virtual_network.hub.name
+  virtual_network_name = data.azurerm_virtual_network.hub[0].name
+}
+
+resource "azurerm_subnet" "hub_gateway" {
+  count                = var.create_hub_vnet ? 1 : 0
+  name                 = var.hub_gateway_subnet_name
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.hub[0].name
   address_prefixes     = [var.hub_gateway_subnet_prefix]
 }
 
+data "azurerm_virtual_network" "spoke" {
+  for_each            = var.create_spoke_vnets ? {} : local.spoke_vnets
+  name                = each.value.name
+  resource_group_name = var.resource_group_name
+}
+
 resource "azurerm_virtual_network" "spoke" {
-  for_each            = { for s in var.spoke_vnets : s.name => s }
+  for_each            = var.create_spoke_vnets ? local.spoke_vnets : {}
   name                = each.value.name
   address_space       = [each.value.address_space]
   location            = var.location
   resource_group_name = var.resource_group_name
+}
+
+data "azurerm_subnet" "spoke_private" {
+  for_each             = var.create_spoke_vnets ? {} : data.azurerm_virtual_network.spoke
+  name                 = "${each.value.name}-private"
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = each.value.name
 }
 
 resource "azurerm_subnet" "spoke_private" {
