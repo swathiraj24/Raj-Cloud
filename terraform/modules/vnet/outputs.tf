@@ -1,5 +1,5 @@
 output "resource_group_name" {
-  value = var.create_resource_group ? azurerm_resource_group.this[0].name : data.azurerm_resource_group.existing[0].name
+  value       = var.create_resource_group ? azurerm_resource_group.this[0].name : data.azurerm_resource_group.existing[0].name
   description = "The resource group used for the hub and spoke network."
 }
 

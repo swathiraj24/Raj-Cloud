@@ -3,6 +3,12 @@ variable "resource_group_name" {
   description = "Name of the resource group for hub and spoke resources."
 }
 
+variable "create_resource_group" {
+  type        = bool
+  description = "Whether to create the resource group in this module. Set false when the resource group already exists."
+  default     = true
+}
+
 variable "location" {
   type        = string
   description = "Azure region for the hub and spoke network."
