@@ -50,13 +50,13 @@ variable "spoke_vnets" {
     address_space = string
   }))
   description = "List of spoke VNets to create."
-  default = []
+  default     = []
 }
 
 variable "spoke_subnet_prefixes" {
-  type = map(string)
+  type        = map(string)
   description = "Map of spoke VNet names to private subnet CIDRs."
-  default = {}
+  default     = {}
 }
 
 variable "service_endpoints" {

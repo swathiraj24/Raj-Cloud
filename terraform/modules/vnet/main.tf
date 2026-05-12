@@ -44,7 +44,7 @@ resource "azurerm_virtual_network" "spoke" {
 }
 
 resource "azurerm_subnet" "spoke_private" {
-  for_each            = azurerm_virtual_network.spoke
+  for_each             = azurerm_virtual_network.spoke
   name                 = "${each.value.name}-private"
   resource_group_name  = azurerm_resource_group.this.name
   virtual_network_name = each.value.name
