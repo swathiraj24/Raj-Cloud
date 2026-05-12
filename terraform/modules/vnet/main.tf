@@ -30,7 +30,7 @@ resource "azurerm_subnet" "hub_private" {
 
 resource "azurerm_subnet" "hub_gateway" {
   name                 = var.hub_gateway_subnet_name
-  resource_group_name  = var.resource_group_name
+  resource_group_name  = azurerm_resource_group.this.name
   virtual_network_name = azurerm_virtual_network.hub.name
   address_prefixes     = [var.hub_gateway_subnet_prefix]
 }
