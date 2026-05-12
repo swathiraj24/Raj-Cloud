@@ -9,6 +9,7 @@ on:
       - dev
     paths:
       - 'terraform/**'
+      - '.github/workflows/**'
   workflow_dispatch:
 
 jobs:
