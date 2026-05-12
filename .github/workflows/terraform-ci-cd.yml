@@ -24,10 +24,10 @@ jobs:
       - name: Terraform fmt
         run: terraform fmt -check -recursive terraform
       - name: Terraform init
-        working-directory: terraform/environments/dev
+        working-directory: terraform/environments/prod
         run: terraform init
       - name: Terraform validate
-        working-directory: terraform/environments/dev
+        working-directory: terraform/environments/prod
         run: terraform validate
 
   plan:
@@ -41,10 +41,10 @@ jobs:
         with:
           terraform_version: 1.5.0
       - name: Terraform init
-        working-directory: terraform/environments/dev
+        working-directory: terraform/environments/prod
         run: terraform init
       - name: Terraform plan
-        working-directory: terraform/environments/dev
+        working-directory: terraform/environments/prod
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -71,8 +71,8 @@ jobs:
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
       - name: Terraform init
-        working-directory: terraform/environments/dev
+        working-directory: terraform/environments/prod
         run: terraform init
       - name: Terraform apply
-        working-directory: terraform/environments/dev
+        working-directory: terraform/environments/prod
         run: terraform apply -auto-approve
